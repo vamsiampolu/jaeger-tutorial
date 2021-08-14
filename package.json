@@ -1,0 +1,27 @@
+{
+  "name": "jaeger-tutorial",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "bluebird": "^3.7.2",
+    "cls-bluebird": "^2.1.0",
+    "continuation-local-storage": "^3.2.1",
+    "jaeger-client": "^3.18.1",
+    "koa": "^2.13.1",
+    "opentracing": "^0.14.5"
+  },
+  "devDependencies": {
+    "standard": "^16.0.3"
+  },
+  "scripts": {
+    "lint": "standard",
+    "start": "node ./index.js",
+    "start:all": "docker-compose up",
+    "start:publisher": "node ./publisher.js",
+    "start:formatter": "node ./formatter.js",
+    "start:client": "node ./hello.js",
+    "start:baggage-client": "node ./hello-context.js"
+  }
+}

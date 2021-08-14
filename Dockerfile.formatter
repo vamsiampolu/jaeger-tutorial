@@ -1,0 +1,10 @@
+FROM node:lts-alpine
+
+ENV HOME /usr/app
+WORKDIR $HOME
+EXPOSE 3001
+
+COPY . .
+RUN yarn install
+
+CMD node $HOME/formatter.js

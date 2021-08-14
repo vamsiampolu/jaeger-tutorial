@@ -1,0 +1,9 @@
+FROM node:lts-alpine
+ENV HOME /usr/app
+WORKDIR $HOME
+EXPOSE 3002
+
+COPY . .
+
+RUN yarn install
+CMD node publisher.js

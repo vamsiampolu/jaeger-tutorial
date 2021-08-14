@@ -1,0 +1,57 @@
+version: '3.7'
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    hostname: jaeger
+    networks:
+      - tracie
+    ports:
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "16686:16686"
+
+  formatter:
+    hostname: formatter
+    restart: on-failure
+    depends_on:
+      - jaeger
+    networks:
+      - tracie
+    build:
+     context: .
+     dockerfile: Dockerfile.formatter
+    ports:
+      - 3001:3001
+
+  publisher:
+    hostname: publisher
+    restart: on-failure
+    depends_on:
+      - jaeger
+    networks:
+      - tracie
+    build:
+     context: .
+     dockerfile: Dockerfile.publisher
+    ports:
+      - 3002:3002
+
+  client:
+    restart: on-failure
+    environment:
+      - WAIT_HOSTS=formatter:3001, publisher:3002
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+    depends_on:
+      - jaeger
+      - formatter
+      - publisher
+    networks:
+      - tracie
+    build:
+     context: .
+     dockerfile: Dockerfile.client
+
+networks:
+  tracie:
